@@ -32,13 +32,9 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:SMLLOWNL="http://www.shef
 Error: PostSynapses with EventPorts are not supported by GeNN
 	</xsl:message>
   </xsl:if>
-  <xsl:if test="not(count(//SMLCL:ImpulseReceivePort[@name=$curr_ps/@input_dst_port])=1) and count(//SMLCL:ImpulseReceivePort)=1">
-  	  <xsl:message terminate="no">
-Error: PostSynapses must have one ImpulsePort
-	</xsl:message>
-  </xsl:if>
+
 			
-  // Add new postsynapse type - <xsl:value-of select="//SMLCL:ComponentClass/@name"/>: 
+  // Add new postsynapse type - <xsl:value-of select="//SMLCL:ComponentClass/@name"/> belonging to <xsl:value-of select="$curr_ps/@name"/> : 
   ps.varNames.clear();
   ps.varTypes.clear();
   <xsl:for-each select="//SMLCL:StateVariable">
@@ -174,6 +170,45 @@ Error: Connections to PostSynapses from sources other than the destination Neuro
 	</xsl:for-each>
 	</xsl:for-each>
 </xsl:for-each>
+
+<!-- GENERIC INPUTS BETWEEN NEURONS -->	
+
+<!--xsl:for-each select="/SMLLOWNL:SpineML/SMLLOWNL:Population/SMLLOWNL:Neuron">
+	<xsl:variable name="curr_nrn" select="."/>
+<xsl:variable name="allRelevantInputs" select="SMLLOWNL:Input[@src=//SMLLOWNL:Neuron/@name]"/>
+<xsl:for-each select="$allRelevantInputs"-->
+<xsl:for-each select="/SMLLOWNL:SpineML/SMLLOWNL:Population/SMLLOWNL:Neuron/SMLLOWNL:Input[@src=//SMLLOWNL:Neuron/@name]">
+
+	<xsl:variable name="NeuronComp" select="document(../@url)"/>
+
+  // Add new postsynapse type - <xsl:value-of select="//SMLCL:ComponentClass/@name"/>: 
+  ps.varNames.clear();
+  ps.varTypes.clear();
+  ps.pNames.clear();
+  
+  ps.postSyntoCurrent = tS(" \
+  0; \n \
+  <xsl:variable name="allRelevantInputs" select="../SMLLOWNL:Input[@src=//SMLLOWNL:Neuron/@name]"/>
+  <xsl:variable name="currInput" select="."/>
+<xsl:for-each select="$allRelevantInputs">
+  <xsl:if test="position()=1 and generate-id(.)=generate-id($currInput)">
+  		<xsl:for-each select="$NeuronComp//SMLCL:AnalogReducePort[@name=$allRelevantInputs/@dst_port] | $NeuronComp//SMLCL:AnalogReceivePort[@name=$allRelevantInputs/@dst_port]">
+     	<!---->float <xsl:value-of select="@name"/>_NB = 0; \n \
+     	</xsl:for-each>
+   </xsl:if>
+   </xsl:for-each>
+     	<xsl:value-of select="@dst_port"/>_NB += $(inSyn); \n \
+");
+  	 
+	ps.postSynDecay = tS(" \
+  	 	$(inSyn) = 0; \
+  	");
+
+  postSynModels.push_back(ps);
+<!---->
+
+</xsl:for-each>
+<!--/xsl:for-each-->
 
 </xsl:when>
 

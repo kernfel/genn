@@ -27,6 +27,14 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:SMLLOWNL="http://www.shef
 	<xsl:variable name="curr_nb" select="."/>
 	<!-- ENTER THE COMPONENT FILE -->
 	<xsl:for-each select="document(@url)">
+
+<!-- TEST FOR UNSUPPORTED FEATURES -->
+<!-- MULTIPLE RANDOMNORMALS - NOTE THIS WON'T FIND MULTIPLE RANDOMNORMALS IN SAME MATHINLINE -->
+<xsl:call-template name="testRandom">
+<xsl:with-param name="inlinesList" select="//SMLCL:MathInline"/>
+</xsl:call-template>
+
+
 	<xsl:choose>
 		<!-- FIRST HANDLE THE EXISTING NEURON TYPES BY RECOGNISING THEM -->
 		<xsl:when test="/SMLCL:SpineML/SMLCL:ComponentClass[@name = 'GeNNNativeTraubMiles']">
@@ -44,12 +52,12 @@ xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:SMLLOWNL="http://www.shef
 		<xsl:otherwise>
   <!-- UNRECOGNISED NEURON TYPE - GENERATE GeNN CLASS -->
   <!-- Sanity - is the neuron type compatible with GeNN?? -->
-  <xsl:if test="not(count(//SMLCL:EventSendPort)=1)">
+  <!--xsl:if test="not(count(//SMLCL:EventSendPort)=1)">
   	  <xsl:message terminate="no">
-Error: Trying to add a neuron with more than one event send port - which really just won't work in GeNN
+Error: Trying to add a neuron with more (or less) than one event send port - which really just won't work in GeNN
 (basically I'm flagging this because you don't have just one EventSendPort)
 	</xsl:message>
-  </xsl:if>
+  </xsl:if-->
 			
   // Add new neuron type - <xsl:value-of select="//SMLCL:ComponentClass/@name"/>: 
   n.varNames.clear();
@@ -71,8 +79,28 @@ Error: Trying to add a neuron type without an input 'Isyn'. At the moment this w
   n.varNames.push_back(tS("<xsl:value-of select="concat(@name,'_NB')"/>"));
   n.varTypes.push_back(tS("float"));<!---->
   </xsl:for-each>
+  // alias output ports
+  <xsl:for-each select="//SMLCL:AnalogSendPort[@name=//SMLCL:Alias/@name]">
+  n.varNames.push_back(tS("<xsl:value-of select="concat(@name,'_NB')"/>"));
+  n.varTypes.push_back(tS("float"));<!---->	
+	</xsl:for-each>
   n.varNames.push_back(tS("__regime_val"));
   n.varTypes.push_back(tS("int"));
+  <!-- Find if we have randomNormal and add var -->
+  <xsl:for-each select="//SMLCL:MathInline">
+  	<xsl:if test="contains(.,'randomNormal')">
+  n.varNames.push_back(tS("randomNormal"));
+  n.varTypes.push_back(tS("float"));
+  	</xsl:if>
+  </xsl:for-each>
+  <!-- Find if we have randomNormal and add var -->
+  <xsl:for-each select="//SMLCL:MathInline">
+  	<xsl:if test="contains(.,'randomUniform')">
+  n.varNames.push_back(tS("randomUniform"));
+  n.varTypes.push_back(tS("float"));
+  	</xsl:if>
+  </xsl:for-each>
+  
   n.pNames.clear();
   <xsl:for-each select="//SMLCL:Parameter">
   n.pNames.push_back(tS("<xsl:value-of select="concat(@name,'_NB')"/>"));<!---->
@@ -94,16 +122,38 @@ Error: Trying to add a neuron type without an input 'Isyn'. At the moment this w
   	 <xsl:for-each select="$expt_root//SMLEX:TimeVaryingInput[@target=$curr_nb/@name]">
   	 	<!-- We know the input port is declared, so we can quickly update the values -->
   	 	<xsl:for-each select="SMLEX:TimePointValue">
+			<!-- list in reverse order... -->
+			<xsl:sort select="position()" data-type="number" order="descending"/>
+			<xsl:if test="not(position()=1)">
+<!---->			<!---->else <!---->		
+			</xsl:if>
   	 		<!---->if (t > <xsl:value-of select="@time"/>) { \n \
 <!----> <!----><xsl:value-of select="../@port"/>_NB += <xsl:value-of select="@value"/>; \n \
 <!----> <!---->} \n \
 <!----></xsl:for-each>
   	 </xsl:for-each>
-<!---->  	 //hack \n \
-  	 float randomNormal = 0; \n \
+  <xsl:for-each select="//SMLCL:MathInline">
+  	<xsl:if test="contains(.,'randomNormal')">
+<!---->  	 float randomNormal = lrandomNormal; \n \
+  	</xsl:if>
+  </xsl:for-each>
+  <xsl:for-each select="//SMLCL:MathInline">
+  	<xsl:if test="contains(.,'randomUniform')">
+<!---->  	 float randomUniform = lrandomUniform; \n \
+  	</xsl:if>
+  </xsl:for-each>
   	 <!-- DO ALIASES  -->
-  	 <xsl:for-each select="//SMLCL:Alias"> <!-- ALIAS EQN -->
+  	 <xsl:for-each select="//SMLCL:Alias[not(@name=//SMLCL:AnalogSendPort/@name)]"> <!-- ALIAS EQN -->
   	 	<!---->float <xsl:value-of select="@name"/> = (<!---->
+		<xsl:call-template name="add_indices">
+			<xsl:with-param name="string" select="SMLCL:MathInline"/>
+			<xsl:with-param name="params" select="//SMLCL:Parameter | //SMLCL:StateVariable | //SMLCL:AnalogReducePort"/>
+		</xsl:call-template>); \n \
+	 <!---->   	 
+  	 </xsl:for-each> <!-- END ALIAS EQN -->
+    <!-- DO ALIASES  -->
+  	 <xsl:for-each select="//SMLCL:Alias[@name=//SMLCL:AnalogSendPort/@name]"> <!-- ALIAS EQN -->
+  	 	<!----> $(<xsl:value-of select="@name"/>_NB) = (<!---->
 		<xsl:call-template name="add_indices">
 			<xsl:with-param name="string" select="SMLCL:MathInline"/>
 			<xsl:with-param name="params" select="//SMLCL:Parameter | //SMLCL:StateVariable | //SMLCL:AnalogReducePort"/>
@@ -155,7 +205,15 @@ Error: Trying to add a neuron type without an input 'Isyn'. At the moment this w
   	<xsl:if test="count($curr_nb/../SMLLOWNL:Projection//SMLLOWNL:WeightUpdate[@input_src_port=$curr_c//SMLCL:AnalogSendPort/@name]) > 0">
 <!---->oldSpike = false; \n \
   	</xsl:if>
+  	<xsl:if test="not(count(//SMLCL:EventSendPort) > 0)">
+<!---->oldSpike = false; \n \
+  	</xsl:if>
   	<!---->");
+  	
+  	<!-- if we need analog transmission-->
+  	<xsl:if test="not(count(//SMLCL:EventSendPort) > 0)">
+			n.thresholdConditionCode = "true";
+  	</xsl:if>
   	<!-- IF WE ARE A SPIKING NEURON -->
   	<xsl:if test="count(//SMLCL:EventSendPort)>0">
   	n.thresholdConditionCode = tS(" \
@@ -346,7 +404,31 @@ Error: Trying to add a neuron type without an input 'Isyn'. At the moment this w
 
 </xsl:template>	
 
-
+<xsl:template name="testRandom">
+	<xsl:param name="inlinesList"/>
+	<xsl:param name="count" select="0"/>
+	<xsl:if test="$inlinesList">
+		<xsl:if test="number($count) > 1">
+			<xsl:message terminate="yes">
+Error: multiple randomNormal in the same component are not currently supported - sorry!
+			</xsl:message>
+		</xsl:if>
+		<xsl:if test="contains($inlinesList[1],'randomNormal')">
+			<xsl:call-template name="testRandom">
+				<xsl:with-param name="inlinesList" select="$inlinesList[position() > 1]"/>
+				<xsl:with-param name="count" select="$count+1"/>
+			</xsl:call-template>
+		</xsl:if>
+		<xsl:if test="not(contains($inlinesList[1],'randomNormal'))">
+			<xsl:call-template name="testRandom">
+				<xsl:with-param name="inlinesList" select="$inlinesList[position() > 1]"/>
+				<xsl:with-param name="count" select="$count"/>
+			</xsl:call-template>
+		</xsl:if>
+	</xsl:if>
+</xsl:template>
+	
+	
 <xsl:include href="utils_file_code.xsl"/>
 
 </xsl:stylesheet>

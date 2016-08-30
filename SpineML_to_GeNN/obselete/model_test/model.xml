@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LL:SpineML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.shef.ac.uk/SpineMLNetworkLayer" xmlns:LL="http://www.shef.ac.uk/SpineMLLowLevelNetworkLayer" xsi:schemaLocation="http://www.shef.ac.uk/SpineMLLowLevelNetworkLayer SpineMLLowLevelNetworkLayer.xsd http://www.shef.ac.uk/SpineMLNetworkLayer SpineMLNetworkLayer.xsd" name="MBody1">
+    <LL:Population>
+        <LL:Neuron name="PN" size="100" url="GeNNNativePoisson.xml">
+            <Property name="therate" dimension="Hz">
+                <FixedValue value="0.1"/>
+            </Property>
+            <Property name="trefract" dimension="ms">
+                <FixedValue value="2.5"/>
+            </Property>
+            <Property name="Vspike" dimension="mV">
+                <FixedValue value="20"/>
+            </Property>
+            <Property name="Vrest" dimension="mV">
+                <FixedValue value="-60"/>
+            </Property>
+            <Property name="V" dimension="mV">
+                <FixedValue value="-60"/>
+            </Property>
+            <Property name="seed" dimension="?">
+                <FixedValue value="0"/>
+            </Property>
+            <Property name="spikeTime" dimension="ms">
+                <FixedValue value="-10"/>
+            </Property>
+        </LL:Neuron>
+        <Layout url="none.xml"/>
+        <LL:Projection dst_population="KC">
+            <LL:Synapse>
+                <AllToAllConnection>
+                    <Delay Dimension="ms">
+                        <FixedValue value="0"/>
+                    </Delay>
+                </AllToAllConnection>
+                <LL:WeightUpdate name="PN to KC Synapse 0 weight_update" url="GeNNNativeSynapse.xml" input_src_port="" input_dst_port="">
+                    <Property name="Erev" dimension="?">
+                        <FixedValue value="0"/>
+                    </Property>
+                    <Property name="Epre" dimension="?">
+                        <FixedValue value="-20"/>
+                    </Property>
+                    <Property name="tau_S" dimension="?">
+                        <FixedValue value="1"/>
+                    </Property>
+                </LL:WeightUpdate>
+                <LL:PostSynapse name="PN to KC Synapse 0 postsynapse" url="GeNNNativePostSynapse.xml" input_src_port="" input_dst_port="" output_src_port="" output_dst_port=""/>
+            </LL:Synapse>
+        </LL:Projection>
+        <LL:Projection dst_population="LHI">
+            <LL:Synapse>
+                <AllToAllConnection>
+                    <Delay Dimension="ms">
+                        <FixedValue value="0"/>
+                    </Delay>
+                </AllToAllConnection>
+                <LL:WeightUpdate name="PN to LHI Synapse 0 weight_update" url="GeNNNativeSynapse.xml" input_src_port="" input_dst_port="">
+                    <Property name="Erev" dimension="?">
+                        <FixedValue value="0"/>
+                    </Property>
+                    <Property name="Epre" dimension="?">
+                        <FixedValue value="-20"/>
+                    </Property>
+                    <Property name="tau_S" dimension="?">
+                        <FixedValue value="1"/>
+                    </Property>
+                </LL:WeightUpdate>
+                <LL:PostSynapse name="PN to LHI Synapse 0 postsynapse" url="GeNNNativePostSynapse.xml" input_src_port="" input_dst_port="" output_src_port="" output_dst_port=""/>
+            </LL:Synapse>
+        </LL:Projection>
+    </LL:Population>
+    <LL:Population>
+        <LL:Neuron name="KC" size="1000" url="GeNNNativeTraubMiles.xml">
+            <Property name="gNa" dimension="?">
+                <FixedValue value="7.15"/>
+            </Property>
+            <Property name="ENa" dimension="?">
+                <FixedValue value="50"/>
+            </Property>
+            <Property name="gK" dimension="?">
+                <FixedValue value="1.43"/>
+            </Property>
+            <Property name="EK" dimension="?">
+                <FixedValue value="-95"/>
+            </Property>
+            <Property name="gl" dimension="?">
+                <FixedValue value="0.02672"/>
+            </Property>
+            <Property name="El" dimension="?">
+                <FixedValue value="-63.563"/>
+            </Property>
+            <Property name="C" dimension="?">
+                <FixedValue value="0.143"/>
+            </Property>
+            <Property name="V" dimension="mV">
+                <FixedValue value="-60"/>
+            </Property>
+            <Property name="m" dimension="?">
+                <FixedValue value="0.05293"/>
+            </Property>
+            <Property name="h" dimension="?">
+                <FixedValue value="0.31767"/>
+            </Property>
+            <Property name="n" dimension="?">
+                <FixedValue value="0.59612"/>
+            </Property>
+        </LL:Neuron>
+        <Layout url="none.xml"/>
+        <LL:Projection dst_population="DN">
+            <LL:Synapse>
+                <AllToAllConnection>
+                    <Delay Dimension="ms">
+                        <FixedValue value="0"/>
+                    </Delay>
+                </AllToAllConnection>
+                <LL:WeightUpdate name="KC to DN Synapse 0 weight_update" url="GeNNNativeLearningSynapse.xml" input_src_port="" input_dst_port="">
+                    <Property name="Erev" dimension="?">
+                        <FixedValue value="0"/>
+                    </Property>
+                    <Property name="Epre" dimension="?">
+                        <FixedValue value="-20"/>
+                    </Property>
+                    <Property name="tau_S" dimension="?">
+                        <FixedValue value="5"/>
+                    </Property>
+                    <Property name="TLRN" dimension="?">
+                        <FixedValue value="25"/>
+                    </Property>
+                    <Property name="TCHNG" dimension="?">
+                        <FixedValue value="100"/>
+                    </Property>
+                    <Property name="TDECAY" dimension="?">
+                        <FixedValue value="50000"/>
+                    </Property>
+                    <Property name="TPUNISH10" dimension="?">
+                        <FixedValue value="100000"/>
+                    </Property>
+                    <Property name="TPUNISH01" dimension="?">
+                        <FixedValue value="100"/>
+                    </Property>
+                    <Property name="GMAX" dimension="?">
+                        <FixedValue value="0.06"/>
+                    </Property>
+                    <Property name="GMID" dimension="?">
+                        <FixedValue value="0.03"/>
+                    </Property>
+                    <Property name="GSLOPE" dimension="?">
+                        <FixedValue value="33.33"/>
+                    </Property>
+                    <Property name="TAUSHIFT" dimension="?">
+                        <FixedValue value="10"/>
+                    </Property>
+                    <Property name="GSYN0" dimension="?">
+                        <FixedValue value="6e-05"/>
+                    </Property>
+                </LL:WeightUpdate>
+                <LL:PostSynapse name="KC to DN Synapse 0 postsynapse" url="GeNNNativeLearningPostSynapse.xml" input_src_port="" input_dst_port="" output_src_port="" output_dst_port=""/>
+            </LL:Synapse>
+        </LL:Projection>
+    </LL:Population>
+    <LL:Population>
+        <LL:Neuron name="LHI" size="20" url="GeNNNativeTraubMiles.xml">
+            <Property name="gNa" dimension="?">
+                <FixedValue value="7.15"/>
+            </Property>
+            <Property name="ENa" dimension="?">
+                <FixedValue value="50"/>
+            </Property>
+            <Property name="gK" dimension="?">
+                <FixedValue value="1.43"/>
+            </Property>
+            <Property name="EK" dimension="?">
+                <FixedValue value="-95"/>
+            </Property>
+            <Property name="gl" dimension="?">
+                <FixedValue value="0.02672"/>
+            </Property>
+            <Property name="El" dimension="?">
+                <FixedValue value="-63.563"/>
+            </Property>
+            <Property name="C" dimension="?">
+                <FixedValue value="0.143"/>
+            </Property>
+            <Property name="V" dimension="mV">
+                <FixedValue value="-60"/>
+            </Property>
+            <Property name="m" dimension="?">
+                <FixedValue value="0.05293"/>
+            </Property>
+            <Property name="h" dimension="?">
+                <FixedValue value="0.31767"/>
+            </Property>
+            <Property name="n" dimension="?">
+                <FixedValue value="0.59612"/>
+            </Property>
+        </LL:Neuron>
+        <Layout url="none.xml"/>
+        <LL:Projection dst_population="KC">
+            <LL:Synapse>
+                <AllToAllConnection>
+                    <Delay Dimension="ms">
+                        <FixedValue value="0"/>
+                    </Delay>
+                </AllToAllConnection>
+                <LL:WeightUpdate name="LHI to KC Synapse 0 weight_update" url="GeNNNativeGradedSynapse.xml" input_src_port="" input_dst_port="">
+                    <Property name="Erev" dimension="?">
+                        <FixedValue value="-92"/>
+                    </Property>
+                    <Property name="Epre" dimension="?">
+                        <FixedValue value="-40"/>
+                    </Property>
+                    <Property name="tau_S" dimension="?">
+                        <FixedValue value="3"/>
+                    </Property>
+                    <Property name="Vslope" dimension="?">
+                        <FixedValue value="50"/>
+                    </Property>
+                </LL:WeightUpdate>
+                <LL:PostSynapse name="LHI to KC Synapse 0 postsynapse" url="GeNNNativeGradedPostSynapse.xml" input_src_port="" input_dst_port="" output_src_port="" output_dst_port=""/>
+            </LL:Synapse>
+        </LL:Projection>
+    </LL:Population>
+    <LL:Population>
+        <LL:Neuron name="DN" size="100" url="GeNNNativeTraubMiles.xml">
+            <Property name="gNa" dimension="?">
+                <FixedValue value="7.15"/>
+            </Property>
+            <Property name="ENa" dimension="?">
+                <FixedValue value="50"/>
+            </Property>
+            <Property name="gK" dimension="?">
+                <FixedValue value="1.43"/>
+            </Property>
+            <Property name="EK" dimension="?">
+                <FixedValue value="-95"/>
+            </Property>
+            <Property name="gl" dimension="?">
+                <FixedValue value="0.02672"/>
+            </Property>
+            <Property name="El" dimension="?">
+                <FixedValue value="-63563"/>
+            </Property>
+            <Property name="C" dimension="?">
+                <FixedValue value="0.143"/>
+            </Property>
+            <Property name="V" dimension="mV">
+                <FixedValue value="-60"/>
+            </Property>
+            <Property name="m" dimension="?">
+                <FixedValue value="0.05293"/>
+            </Property>
+            <Property name="h" dimension="?">
+                <FixedValue value="0.31767"/>
+            </Property>
+            <Property name="n" dimension="?">
+                <FixedValue value="0.59612"/>
+            </Property>
+        </LL:Neuron>
+        <Layout url="none.xml"/>
+        <LL:Projection dst_population="DN">
+            <LL:Synapse>
+                <AllToAllConnection>
+                    <Delay Dimension="ms">
+                        <FixedValue value="0"/>
+                    </Delay>
+                </AllToAllConnection>
+                <LL:WeightUpdate name="DN to DN Synapse 0 weight_update" url="GeNNNativeGradedSynapse.xml" input_src_port="" input_dst_port="">
+                    <Property name="Erev" dimension="?">
+                        <FixedValue value="-92"/>
+                    </Property>
+                    <Property name="Epre" dimension="?">
+                        <FixedValue value="-30"/>
+                    </Property>
+                    <Property name="tau_S" dimension="?">
+                        <FixedValue value="8"/>
+                    </Property>
+                    <Property name="Vslope" dimension="?">
+                        <FixedValue value="50"/>
+                    </Property>
+                </LL:WeightUpdate>
+                <LL:PostSynapse name="DN to DN Synapse 0 postsynapse" url="GeNNNativeGradedPostSynapse.xml" input_src_port="" input_dst_port="" output_src_port="" output_dst_port=""/>
+            </LL:Synapse>
+        </LL:Projection>
+    </LL:Population>
+</LL:SpineML>

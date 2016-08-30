@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LL:SpineML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.shef.ac.uk/SpineMLNetworkLayer" xmlns:LL="http://www.shef.ac.uk/SpineMLLowLevelNetworkLayer" xsi:schemaLocation="http://www.shef.ac.uk/SpineMLLowLevelNetworkLayer SpineMLLowLevelNetworkLayer.xsd http://www.shef.ac.uk/SpineMLNetworkLayer SpineMLNetworkLayer.xsd" name="Untitled Project">
+    <LL:Population>
+        <LL:Neuron name="DN" size="100" url="GeNNNativeTraubMiles.xml">
+            <Property name="gNa" dimension="?">
+                <FixedValue value="7.15"/>
+            </Property>
+            <Property name="ENa" dimension="?">
+                <FixedValue value="50"/>
+            </Property>
+            <Property name="gK" dimension="?">
+                <FixedValue value="1.43"/>
+            </Property>
+            <Property name="EK" dimension="?">
+                <FixedValue value="-95"/>
+            </Property>
+            <Property name="gl" dimension="?">
+                <FixedValue value="0.02672"/>
+            </Property>
+            <Property name="El" dimension="?">
+                <FixedValue value="-63.563"/>
+            </Property>
+            <Property name="C" dimension="?">
+                <FixedValue value="0.143"/>
+            </Property>
+            <Property name="V" dimension="mV">
+                <FixedValue value="-60"/>
+            </Property>
+            <Property name="m" dimension="?">
+                <FixedValue value="0.05293"/>
+            </Property>
+            <Property name="h" dimension="?">
+                <FixedValue value="0.31768"/>
+            </Property>
+            <Property name="n" dimension="?">
+                <FixedValue value="0.59612"/>
+            </Property>
+        </LL:Neuron>
+        <Layout url="none.xml"/>
+    </LL:Population>
+    <LL:Population>
+        <LL:Neuron name="PN" size="100" url="GeNNNativePoisson.xml">
+            <Property name="therate" dimension="Hz">
+                <FixedValue value="0.1"/>
+            </Property>
+            <Property name="trefract" dimension="ms">
+                <FixedValue value="2.5"/>
+            </Property>
+            <Property name="Vspike" dimension="mV">
+                <FixedValue value="20"/>
+            </Property>
+            <Property name="Vrest" dimension="mV">
+                <FixedValue value="-60"/>
+            </Property>
+            <Property name="V" dimension="mV">
+                <FixedValue value="-60"/>
+            </Property>
+            <Property name="seed" dimension="?">
+                <FixedValue value="0"/>
+            </Property>
+            <Property name="spikeTime" dimension="ms">
+                <FixedValue value="-10"/>
+            </Property>
+        </LL:Neuron>
+        <Layout url="none.xml"/>
+        <LL:Projection dst_population="DN">
+            <LL:Synapse>
+                <ConnectionList>
+                    <Connection src_neuron="0" dst_neuron="1" delay="0"/>
+                    <Connection src_neuron="1" dst_neuron="0" delay="0"/>
+                    <Connection src_neuron="2" dst_neuron="0" delay="0"/>
+                </ConnectionList>
+                <LL:WeightUpdate name="PN to DN Synapse 0 weight_update" url="GeNNNativeSynapse.xml" input_src_port="out" input_dst_port="in">
+                    <Property name="g" dimension="?">
+                        <UniformDistribution minimum="0.08" maximum="0.15" seed="0"/>
+                    </Property>
+                </LL:WeightUpdate>
+                <LL:PostSynapse name="PN to DN Synapse 0 postsynapse" url="Exp_Decay.xml" input_src_port="g" input_dst_port="g_in" output_src_port="" output_dst_port="">
+                    <Property name="tau_syn" dimension="ms">
+                        <FixedValue value="9"/>
+                    </Property>
+                    <Property name="E" dimension="mV">
+                        <FixedValue value="10"/>
+                    </Property>
+                    <Property name="g" dimension="nS">
+                        <FixedValue value="2"/>
+                    </Property>
+                    <LL:Input src="DN" src_port="" dst_port="">
+                        <OneToOneConnection>
+                            <Delay Dimension="ms">
+                                <FixedValue value="0"/>
+                            </Delay>
+                        </OneToOneConnection>
+                    </LL:Input>
+                </LL:PostSynapse>
+            </LL:Synapse>
+        </LL:Projection>
+        <LL:Projection dst_population="KC">
+            <LL:Synapse>
+                <AllToAllConnection>
+                    <Delay Dimension="ms">
+                        <FixedValue value="0"/>
+                    </Delay>
+                </AllToAllConnection>
+                <LL:WeightUpdate name="PN to KC Synapse 0 weight_update" url="GeNNNativeSynapse.xml" input_src_port="out" input_dst_port="in">
+                    <Property name="g" dimension="?">
+                        <UniformDistribution minimum="0.08" maximum="0.15" seed="0"/>
+                    </Property>
+                </LL:WeightUpdate>
+                <LL:PostSynapse name="PN to KC Synapse 0 postsynapse" url="Exp_Decay.xml" input_src_port="g" input_dst_port="g_in" output_src_port="" output_dst_port="">
+                    <Property name="tau_syn" dimension="ms">
+                        <FixedValue value="1"/>
+                    </Property>
+                    <Property name="E" dimension="mV">
+                        <FixedValue value="0"/>
+                    </Property>
+                    <Property name="g" dimension="nS">
+                        <FixedValue value="0"/>
+                    </Property>
+                    <LL:Input src="KC" src_port="" dst_port="">
+                        <OneToOneConnection>
+                            <Delay Dimension="ms">
+                                <FixedValue value="0"/>
+                            </Delay>
+                        </OneToOneConnection>
+                    </LL:Input>
+                </LL:PostSynapse>
+            </LL:Synapse>
+        </LL:Projection>
+        <LL:Projection dst_population="LHI">
+            <LL:Synapse>
+                <AllToAllConnection>
+                    <Delay Dimension="ms">
+                        <FixedValue value="0"/>
+                    </Delay>
+                </AllToAllConnection>
+                <LL:WeightUpdate name="PN to LHI Synapse 0 weight_update" url="GeNNNativeSynapse.xml" input_src_port="out" input_dst_port="in">
+                    <Property name="g" dimension="?"/>
+                </LL:WeightUpdate>
+                <LL:PostSynapse name="PN to LHI Synapse 0 postsynapse" url="Exp_Decay.xml" input_src_port="g" input_dst_port="g_in" output_src_port="" output_dst_port="">
+                    <Property name="tau_syn" dimension="ms"/>
+                    <Property name="E" dimension="mV"/>
+                    <Property name="g" dimension="nS"/>
+                </LL:PostSynapse>
+            </LL:Synapse>
+        </LL:Projection>
+    </LL:Population>
+    <LL:Population>
+        <LL:Neuron name="KC" size="100" url="GeNNNativeTraubMiles.xml">
+            <Property name="gNa" dimension="?">
+                <FixedValue value="7.15"/>
+            </Property>
+            <Property name="ENa" dimension="?">
+                <FixedValue value="50"/>
+            </Property>
+            <Property name="gK" dimension="?">
+                <FixedValue value="1.43"/>
+            </Property>
+            <Property name="EK" dimension="?">
+                <FixedValue value="-95"/>
+            </Property>
+            <Property name="gl" dimension="?">
+                <FixedValue value="0.02672"/>
+            </Property>
+            <Property name="El" dimension="?">
+                <FixedValue value="-63.563"/>
+            </Property>
+            <Property name="C" dimension="?">
+                <FixedValue value="0.143"/>
+            </Property>
+            <Property name="V" dimension="mV">
+                <FixedValue value="-60"/>
+            </Property>
+            <Property name="m" dimension="?">
+                <FixedValue value="0.05293"/>
+            </Property>
+            <Property name="h" dimension="?">
+                <FixedValue value="0.31768"/>
+            </Property>
+            <Property name="n" dimension="?">
+                <FixedValue value="0.59612"/>
+            </Property>
+        </LL:Neuron>
+        <Layout url="none.xml"/>
+        <LL:Projection dst_population="DN">
+            <LL:Synapse>
+                <AllToAllConnection>
+                    <Delay Dimension="ms">
+                        <FixedValue value="0"/>
+                    </Delay>
+                </AllToAllConnection>
+                <LL:WeightUpdate name="KC to DN Synapse 0 weight_update" url="GeNNNativeSynapse.xml" input_src_port="" input_dst_port="">
+                    <Property name="g" dimension="?">
+                        <FixedValue value="0.01"/>
+                    </Property>
+                </LL:WeightUpdate>
+                <LL:PostSynapse name="KC to DN Synapse 0 postsynapse" url="Exp_Decay.xml" input_src_port="g" input_dst_port="g_in" output_src_port="" output_dst_port="">
+                    <Property name="tau_syn" dimension="ms">
+                        <FixedValue value="20"/>
+                    </Property>
+                    <Property name="E" dimension="mV">
+                        <FixedValue value="-40"/>
+                    </Property>
+                    <Property name="g" dimension="nS">
+                        <FixedValue value="0"/>
+                    </Property>
+                    <LL:Input src="DN" src_port="" dst_port="">
+                        <OneToOneConnection>
+                            <Delay Dimension="ms">
+                                <FixedValue value="0"/>
+                            </Delay>
+                        </OneToOneConnection>
+                    </LL:Input>
+                </LL:PostSynapse>
+            </LL:Synapse>
+        </LL:Projection>
+    </LL:Population>
+    <LL:Population>
+        <LL:Neuron name="LHI" size="20" url="GeNNNativeTraubMiles.xml">
+            <Property name="gNa" dimension="?">
+                <FixedValue value="7.15"/>
+            </Property>
+            <Property name="ENa" dimension="?">
+                <FixedValue value="50"/>
+            </Property>
+            <Property name="gK" dimension="?">
+                <FixedValue value="1.43"/>
+            </Property>
+            <Property name="EK" dimension="?">
+                <FixedValue value="-95"/>
+            </Property>
+            <Property name="gl" dimension="?">
+                <FixedValue value="0.02672"/>
+            </Property>
+            <Property name="El" dimension="?">
+                <FixedValue value="-63.563"/>
+            </Property>
+            <Property name="C" dimension="?">
+                <FixedValue value="0.143"/>
+            </Property>
+            <Property name="V" dimension="mV">
+                <FixedValue value="-60"/>
+            </Property>
+            <Property name="m" dimension="?">
+                <FixedValue value="0.05293"/>
+            </Property>
+            <Property name="h" dimension="?">
+                <FixedValue value="0.31768"/>
+            </Property>
+            <Property name="n" dimension="?">
+                <FixedValue value="0.59612"/>
+            </Property>
+        </LL:Neuron>
+        <Layout url="none.xml"/>
+        <LL:Projection dst_population="KC">
+            <LL:Synapse>
+                <AllToAllConnection>
+                    <Delay Dimension="ms">
+                        <FixedValue value="0"/>
+                    </Delay>
+                </AllToAllConnection>
+                <LL:WeightUpdate name="LHI to KC Synapse 0 weight_update" url="GeNNNativeSynapse.xml" input_src_port="" input_dst_port="">
+                    <Property name="g" dimension="?"/>
+                    <LL:Input src="KC" src_port="" dst_port="">
+                        <OneToOneConnection>
+                            <Delay Dimension="ms">
+                                <FixedValue value="0"/>
+                            </Delay>
+                        </OneToOneConnection>
+                    </LL:Input>
+                </LL:WeightUpdate>
+                <LL:PostSynapse name="LHI to KC Synapse 0 postsynapse" url="Exp_Decay.xml" input_src_port="g" input_dst_port="g_in" output_src_port="" output_dst_port="">
+                    <Property name="tau_syn" dimension="ms"/>
+                    <Property name="E" dimension="mV"/>
+                    <Property name="g" dimension="nS"/>
+                </LL:PostSynapse>
+            </LL:Synapse>
+        </LL:Projection>
+    </LL:Population>
+</LL:SpineML>

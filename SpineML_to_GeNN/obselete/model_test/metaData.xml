@@ -1,0 +1,105 @@
+<!DOCTYPE MetaData>
+<modelMetaData>
+ <population name="PN">
+  <xPos value="0"/>
+  <yPos value="0"/>
+  <animSpeed value="0.2"/>
+  <aspectRatio value="1.66667"/>
+  <colour red="28" blue="248" green="73"/>
+  <size value="1"/>
+  <tag value="1"/>
+  <x3D value="0"/>
+  <y3D value="0"/>
+  <z3D value="0"/>
+  <is_visualised value="0"/>
+ </population>
+ <projection destination="KC" source="PN">
+  <start x="0" y="0.5"/>
+  <curves>
+   <curve>
+    <C1 ypos="1.576979875564575" xpos="-2.896864855708324e-16"/>
+    <C2 ypos="1.000087857246399" xpos="-2.500087738037109"/>
+    <end ypos="2.000097274780273" xpos="-2.500097274780273"/>
+   </curve>
+  </curves>
+ </projection>
+ <projection destination="LHI" source="PN">
+  <start x="0" y="-0.5"/>
+  <curves>
+   <curve>
+    <C1 ypos="-1.5" xpos="0"/>
+    <C2 ypos="-1.5" xpos="-2.999772071838379"/>
+    <end ypos="-0.5" xpos="-2.999772548675537"/>
+   </curve>
+  </curves>
+ </projection>
+ <population name="KC">
+  <xPos value="-3"/>
+  <yPos value="2.5"/>
+  <animSpeed value="0.2"/>
+  <aspectRatio value="1.66667"/>
+  <colour red="250" blue="43" green="25"/>
+  <size value="1"/>
+  <tag value="2"/>
+  <x3D value="0"/>
+  <y3D value="0"/>
+  <z3D value="0"/>
+  <is_visualised value="0"/>
+ </population>
+ <projection destination="DN" source="KC">
+  <start x="-2.166723966598511" y="2.50005841255188"/>
+  <curves>
+   <curve>
+    <C1 ypos="2.500047206878662" xpos="-1.500047206878662"/>
+    <C2 ypos="2.499966144561768" xpos="-1.592599511146545"/>
+    <end ypos="2.499965906143188" xpos="-0.8333333134651184"/>
+   </curve>
+  </curves>
+ </projection>
+ <population name="LHI">
+  <xPos value="-3"/>
+  <yPos value="-2.8026e-45"/>
+  <animSpeed value="0.2"/>
+  <aspectRatio value="1.66667"/>
+  <colour red="255" blue="8" green="224"/>
+  <size value="1"/>
+  <tag value="3"/>
+  <x3D value="0"/>
+  <y3D value="0"/>
+  <z3D value="0"/>
+  <is_visualised value="0"/>
+ </population>
+ <projection destination="KC" source="LHI">
+  <start x="-2.999806642532349" y="0.5"/>
+  <curves>
+   <curve>
+    <C1 ypos="1" xpos="-2.999806642532349"/>
+    <C2 ypos="1.37846302986145" xpos="-3.000137567520142"/>
+    <end ypos="2.000136613845825" xpos="-3.000137567520142"/>
+   </curve>
+  </curves>
+ </projection>
+ <population name="DN">
+  <xPos value="-2.8026e-45"/>
+  <yPos value="2.5"/>
+  <animSpeed value="0.2"/>
+  <aspectRatio value="1.66667"/>
+  <colour red="4" blue="5" green="254"/>
+  <size value="1"/>
+  <tag value="4"/>
+  <x3D value="0"/>
+  <y3D value="0"/>
+  <z3D value="0"/>
+  <is_visualised value="0"/>
+ </population>
+ <projection destination="DN" source="DN">
+  <start x="0.8335351347923279" y="2.301546335220337"/>
+  <curves>
+   <curve>
+    <C1 ypos="2.301546335220337" xpos="1.833535194396973"/>
+    <C2 ypos="1.001546263694763" xpos="0.5335351228713989"/>
+    <end ypos="2.001546144485474" xpos="0.5335351228713989"/>
+   </curve>
+  </curves>
+ </projection>
+</modelMetaData>

@@ -1,0 +1,38 @@
+<modelMetaData>
+ <population name="Population">
+  <xPos value="-2.8026e-45"/>
+  <yPos value="0.490382"/>
+  <animSpeed value="0.2"/>
+  <aspectRatio value="1.66667"/>
+  <colour blue="249" green="28" red="19"/>
+  <size value="1"/>
+  <tag value="1"/>
+  <x3D value="0"/>
+  <y3D value="0"/>
+  <z3D value="0"/>
+  <is_visualised value="1"/>
+ </population>
+ <population name="Population 1">
+  <xPos value="-2.5"/>
+  <yPos value="3.48"/>
+  <animSpeed value="0.2"/>
+  <aspectRatio value="1.66667"/>
+  <colour blue="24" green="253" red="87"/>
+  <size value="1"/>
+  <tag value="2"/>
+  <x3D value="0"/>
+  <y3D value="0"/>
+  <z3D value="0"/>
+  <is_visualised value="1"/>
+ </population>
+ <projection destination="Population" source="Population 1">
+  <start x="-2.499843835830688" y="2.979187250137329"/>
+  <curves>
+   <curve>
+    <C1 xpos="-2.499871253967285" ypos="1.979160785675049"/>
+    <C2 xpos="-2.755457999120139e-16" ypos="1.990361452102661"/>
+    <end xpos="1.739448462627872e-31" ypos="0.9903599619865417"/>
+   </curve>
+  </curves>
+ </projection>
+</modelMetaData>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LL:SpineML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.shef.ac.uk/SpineMLNetworkLayer" xmlns:LL="http://www.shef.ac.uk/SpineMLLowLevelNetworkLayer" xsi:schemaLocation="http://www.shef.ac.uk/SpineMLLowLevelNetworkLayer SpineMLLowLevelNetworkLayer.xsd http://www.shef.ac.uk/SpineMLNetworkLayer SpineMLNetworkLayer.xsd" name="Untitled Project">
+    <LL:Population>
+        <LL:Neuron name="Population" size="100" url="LIntF.xml">
+            <Property name="VReset" dimension="?">
+                <FixedValue value="-70"/>
+            </Property>
+            <Property name="VThresh" dimension="?">
+                <FixedValue value="20"/>
+            </Property>
+            <Property name="tRefrac" dimension="?">
+                <FixedValue value="10"/>
+            </Property>
+            <Property name="VRest" dimension="?">
+                <FixedValue value="-50"/>
+            </Property>
+            <Property name="TAUm" dimension="?">
+                <FixedValue value="20"/>
+            </Property>
+            <Property name="Cm" dimension="?">
+                <FixedValue value="1"/>
+            </Property>
+            <Property name="V" dimension="?">
+                <FixedValue value="-60"/>
+            </Property>
+            <Property name="tSpike" dimension="?">
+                <FixedValue value="0"/>
+            </Property>
+        </LL:Neuron>
+        <Layout url="none.xml"/>
+    </LL:Population>
+    <LL:Population>
+        <LL:Neuron name="Population 1" size="100" url="GeNNNativePoisson.xml">
+            <Property name="therate" dimension="Hz">
+                <FixedValue value="20"/>
+            </Property>
+            <Property name="trefract" dimension="ms">
+                <FixedValue value="0"/>
+            </Property>
+            <Property name="Vspike" dimension="mV">
+                <FixedValue value="100"/>
+            </Property>
+            <Property name="Vrest" dimension="mV">
+                <FixedValue value="-100"/>
+            </Property>
+            <Property name="V" dimension="mV">
+                <FixedValue value="100"/>
+            </Property>
+            <Property name="seed" dimension="?">
+                <FixedValue value="123"/>
+            </Property>
+            <Property name="spikeTime" dimension="ms">
+                <FixedValue value="0"/>
+            </Property>
+        </LL:Neuron>
+        <Layout url="none.xml"/>
+        <LL:Projection dst_population="Population">
+            <LL:Synapse>
+                <ConnectionList>
+                    <Connection src_neuron="0" dst_neuron="1" delay="0"/>
+                    <Connection src_neuron="1" dst_neuron="0" delay="0"/>
+                </ConnectionList>
+                <LL:WeightUpdate name="Population 1 to Population Synapse 0 weight_update" url="GeNNNativeSynapse.xml" input_src_port="out" input_dst_port="in">
+                    <Property name="g" dimension="?">
+                        <UniformDistribution minimum="0.08" maximum="0.15" seed="0"/>
+                    </Property>
+                </LL:WeightUpdate>
+                <LL:PostSynapse name="Population 1 to Population Synapse 0 postsynapse" url="GeNNNativePostSynapse.xml" input_src_port="g" input_dst_port="in" output_src_port="out" output_dst_port="Isyn">
+                    <Property name="Erev" dimension="?">
+                        <FixedValue value="50"/>
+                    </Property>
+                    <Property name="Epre" dimension="?">
+                        <FixedValue value="0"/>
+                    </Property>
+                    <Property name="tau_S" dimension="?">
+                        <FixedValue value="20"/>
+                    </Property>
+                    <Property name="out" dimension="?"/>
+                </LL:PostSynapse>
+            </LL:Synapse>
+        </LL:Projection>
+    </LL:Population>
+</LL:SpineML>

@@ -1,0 +1,144 @@
+<modelMetaData>
+ <population name="DN">
+  <xPos value="2.00008"/>
+  <yPos value="2"/>
+  <animSpeed value="0.2"/>
+  <aspectRatio value="1.66667"/>
+  <colour red="0" blue="127" green="0"/>
+  <size value="1"/>
+  <tag value="1"/>
+  <x3D value="0"/>
+  <y3D value="0"/>
+  <z3D value="0"/>
+  <is_visualised value="1"/>
+ </population>
+ <population name="PN">
+  <xPos value="-2"/>
+  <yPos value="3.5"/>
+  <animSpeed value="0.2"/>
+  <aspectRatio value="1.66667"/>
+  <colour red="87" blue="24" green="253"/>
+  <size value="1"/>
+  <tag value="2"/>
+  <x3D value="0"/>
+  <y3D value="0"/>
+  <z3D value="0"/>
+  <is_visualised value="1"/>
+ </population>
+ <projection destination="DN" source="PN">
+  <start x="-1.999138531500364" y="2.999333053729572"/>
+  <curves>
+   <curve>
+    <C1 ypos="1.999306589267292" xpos="-1.999165949636961"/>
+    <C2 ypos="3.081101505832518" xpos="0.9594718420234685"/>
+    <end ypos="2.50031408555969" xpos="1.518669267865754"/>
+   </curve>
+  </curves>
+ </projection>
+ <genericInput srcPort="" destination="PN to DN Synapse 0 postsynapse" dstPort="" source="DN">
+  <start x="2.288619449111557" y="2.50065907724365"/>
+  <curves>
+   <curve>
+    <C1 ypos="3.386299698428953" xpos="2.799944331618882"/>
+    <C2 ypos="3.600659220294798" xpos="1.999944319697953"/>
+    <end ypos="2.50031408555969" xpos="1.518669267865754"/>
+   </curve>
+  </curves>
+ </genericInput>
+ <projection destination="KC" source="PN">
+  <start x="-1.165959534460569" y="3.406476408145465"/>
+  <curves>
+   <curve>
+    <C1 ypos="3.406476408145465" xpos="0.9973729278502219"/>
+    <C2 ypos="5.718913401912943" xpos="0.9049332279909166"/>
+    <end ypos="5.56985815937449" xpos="2.667018904184154"/>
+   </curve>
+  </curves>
+ </projection>
+ <genericInput srcPort="" destination="PN to KC Synapse 0 postsynapse" dstPort="" source="KC">
+  <start x="2.814621700738719" y="5.999015654873148"/>
+  <curves>
+   <curve>
+    <C1 ypos="6.441551532100931" xpos="2.207578672860912"/>
+    <C2 ypos="5.668819274257913" xpos="1.909527673219493"/>
+    <end ypos="5.56985815937449" xpos="2.667018904184154"/>
+   </curve>
+  </curves>
+ </genericInput>
+ <projection destination="LHI" source="PN">
+  <start x="-1.868531880194212" y="4.000851303241291"/>
+  <curves>
+   <curve>
+    <C1 ypos="4.73920980086092" xpos="-1.675642189795042"/>
+    <C2 ypos="5.958022627781304" xpos="-1.579140221648927"/>
+    <end ypos="5.967219386051568" xpos="-1.333734190040346"/>
+   </curve>
+  </curves>
+ </projection>
+ <population name="KC">
+  <xPos value="3.5"/>
+  <yPos value="5.5"/>
+  <animSpeed value="0.2"/>
+  <aspectRatio value="1.66667"/>
+  <colour red="0" blue="127" green="0"/>
+  <size value="1"/>
+  <tag value="1"/>
+  <x3D value="0"/>
+  <y3D value="0"/>
+  <z3D value="0"/>
+  <is_visualised value="0"/>
+ </population>
+ <projection destination="DN" source="KC">
+  <start x="2.781051411126903" y="4.999433602642313"/>
+  <curves>
+   <curve>
+    <C1 ypos="4.076565112423197" xpos="3.111762537454418"/>
+    <C2 ypos="3.118461697177732" xpos="2.629839589568711"/>
+    <end ypos="2.50065907724365" xpos="2.629839589568711"/>
+   </curve>
+  </curves>
+ </projection>
+ <genericInput srcPort="" destination="KC to DN Synapse 0 postsynapse" dstPort="" source="DN">
+  <start x="2.833279302093125" y="2.124338715152586"/>
+  <curves>
+   <curve>
+    <C1 ypos="2.235550491885984" xpos="3.582608511420823"/>
+    <C2 ypos="2.995413153247679" xpos="3.253125956031418"/>
+    <end ypos="2.50065907724365" xpos="2.629839589568711"/>
+   </curve>
+  </curves>
+ </genericInput>
+ <population name="LHI">
+  <xPos value="-0.5"/>
+  <yPos value="5.99997"/>
+  <animSpeed value="0.2"/>
+  <aspectRatio value="1.66667"/>
+  <colour red="255" blue="0" green="0"/>
+  <size value="1"/>
+  <tag value="1"/>
+  <x3D value="0"/>
+  <y3D value="0"/>
+  <z3D value="0"/>
+  <is_visualised value="0"/>
+ </population>
+ <projection destination="KC" source="LHI">
+  <start x="0.3333333360186987" y="6.000047604770955"/>
+  <curves>
+   <curve>
+    <C1 ypos="6.000198140924986" xpos="2.14768449567155"/>
+    <C2 ypos="6.000200289746516" xpos="1.500010452623535"/>
+    <end ypos="5.839108790706888" xpos="2.667055143808177"/>
+   </curve>
+  </curves>
+ </projection>
+ <genericInput srcPort="" destination="LHI to KC Synapse 0 weight_update" dstPort="" source="KC">
+  <start x="3.046671165918163" y="5.99912389690806"/>
+  <curves>
+   <curve>
+    <C1 ypos="6.683819140743509" xpos="2.425141109918407"/>
+    <C2 ypos="5.987397517513529" xpos="1.976869954561046"/>
+    <end ypos="5.839108790706888" xpos="2.667055143808177"/>
+   </curve>
+  </curves>
+ </genericInput>
+</modelMetaData>
