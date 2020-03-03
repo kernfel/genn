@@ -179,7 +179,7 @@ void chooseDevice(NNmodel &model, //!< the nn model we are generating code for
 		regAllocGran = 256;
 		maxBlocksPerSM = 16;
 	    }
-	    else if (deviceProp[theDevice].major == 5) {
+            else if (deviceProp[theDevice].major >= 5) {
 		smemAllocGran = 256;
 		warpAllocGran = 4;
 		regAllocGran = 256;
