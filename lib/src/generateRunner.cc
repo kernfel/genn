@@ -275,7 +275,8 @@ void genRunner(NNmodel &model, //!< Model description
 	}
 	for (int k = 0, l= nModels[nt].extraGlobalNeuronKernelParameters.size(); k < l; k++) {
 	    extern_variable_def(os, nModels[nt].extraGlobalNeuronKernelParameterTypes[k], nModels[nt].extraGlobalNeuronKernelParameters[k]+model.neuronName[i]);
-	}	
+    }
+    os << "extern scalar * _contiguous_varblock_" << model.neuronName[i] << ";" << ENDL;
     }
     os << ENDL;
         for (int i= 0; i < model.neuronGrpN; i++) {
@@ -744,7 +745,8 @@ void genRunner(NNmodel &model, //!< Model description
 	}
 	for (int k = 0, l= nModels[nt].extraGlobalNeuronKernelParameters.size(); k < l; k++) {
 	    os << nModels[nt].extraGlobalNeuronKernelParameterTypes[k] << " " <<  nModels[nt].extraGlobalNeuronKernelParameters[k] << model.neuronName[i] << ";" << ENDL; 
-	}	
+    }
+    os << "scalar * _contiguous_varblock_" << model.neuronName[i] << ";" << ENDL;
     }
     os << ENDL;
 
@@ -973,6 +975,21 @@ void genRunner(NNmodel &model, //!< Model description
 
 	}
 
+    size_t contiguous_offset = 0, contiguous_size = 0;
+    for (int j = 0; j < nModels[nt].varNames.size(); j++) {
+        if (model.neuronVarNeedQueue[i][j]) {
+        size = model.neuronN[i] * model.neuronDelaySlots[i];
+        }
+        else {
+        size = model.neuronN[i];
+        }
+        if ( nModels[nt].varNames[j][0] == '_' )
+            contiguous_size += size;
+    }
+    if ( contiguous_size > 0 ) {
+        os << "cudaHostAlloc(&_contiguous_varblock_" << model.neuronName[i] << ", " << contiguous_size << " * sizeof(scalar), cudaHostAllocPortable);" << ENDL;
+    }
+
 	// Variable are queued only if they are referenced in forward synapse code.
 	for (int j = 0; j < nModels[nt].varNames.size(); j++) {
 	    if (model.neuronVarNeedQueue[i][j]) {
@@ -983,8 +1000,13 @@ void genRunner(NNmodel &model, //!< Model description
 	    }
 
 #ifndef CPU_ONLY
-	    os << "cudaHostAlloc(&" << nModels[nt].varNames[j] + model.neuronName[i] << ", ";
-	    os << size << " * sizeof(" << nModels[nt].varTypes[j] << "), cudaHostAllocPortable);" << ENDL;
+        if ( nModels[nt].varNames[j][0] == '_' ) {
+            os << nModels[nt].varNames[j] << model.neuronName[i] << " = _contiguous_varblock_" << model.neuronName[i] << " + " << contiguous_offset << ";" << ENDL;
+            contiguous_offset += size;
+        } else {
+            os << "cudaHostAlloc(&" << nModels[nt].varNames[j] + model.neuronName[i] << ", ";
+            os << size << " * sizeof(" << nModels[nt].varTypes[j] << "), cudaHostAllocPortable);" << ENDL;
+        }
 	    os << "    deviceMemAllocate(&d_" << nModels[nt].varNames[j] << model.neuronName[i];
 	    os << ", dd_" << nModels[nt].varNames[j] << model.neuronName[i] << ", ";
 	    os << size << " * sizeof(" << nModels[nt].varTypes[j] << "));" << ENDL;
@@ -1450,13 +1472,16 @@ void genRunner(NNmodel &model, //!< Model description
 	for (int k= 0, l= nModels[nt].varNames.size(); k < l; k++) {
 
 #ifndef CPU_ONLY
-	    os << "cudaFreeHost(" << nModels[nt].varNames[k] << model.neuronName[i] << ");" << ENDL;
+        if ( nModels[nt].varNames[k][0] != '_' ) {
+            os << "cudaFreeHost(" << nModels[nt].varNames[k] << model.neuronName[i] << ");" << ENDL;
+        }
 	    os << "    CHECK_CUDA_ERRORS(cudaFree(d_" << nModels[nt].varNames[k] << model.neuronName[i] << "));" << ENDL;
 #else
 	    os << "    delete[] " << nModels[nt].varNames[k] << model.neuronName[i] << ";" << ENDL;
 #endif
 
 	}
+    os << "cudaFreeHost(_contiguous_varblock_" << model.neuronName[i] << ");" << ENDL;
     }
 
     // FREE SYNAPSE VARIABLES
